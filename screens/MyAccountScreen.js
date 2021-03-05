@@ -3,7 +3,9 @@ import { ActivityIndicator,Alert, Text, Button, View, FlatList,StyleSheet, Touch
 import AsyncStorage from '@react-native-community/async-storage';
 import MapView, {PROVIDER_GOOGLE,Marker} from 'react-native-maps';
 import {requestLocationPermission,getGeoInfo} from '../components/MapFuncs';
-const Loader = () => (
+import Loader from '../components/Loader';
+
+const Lortader = () => (
   <View style={{ minHeight: 230, padding: 20 }}>
     <ActivityIndicator
       color="#000"
@@ -65,6 +67,40 @@ class MyAccountScreen extends React.Component {
       console.log("done loading");
     });
   }
+  async deleteAccount()
+  {
+    return await fetch ("http://10.0.2.2:3333/api/1.0.0/user/logout",
+    {
+      //set the type of request and and the auth. token
+      method: 'POST',
+      headers: { 
+      'X-Authorization':await AsyncStorage.getItem('@sessionToken') },
+    })
+  .then((response)=>
+  {
+    if (response.status == 200) {
+      Alert.alert("You loged out!");
+      this.props.navigation.popToTop()
+    } else {
+      throw 'Problem loging out.' + response.status;
+    }
+  })
+  .catch((error) => {
+    console.error(error);
+  })
+}
+
+
+async componentDidMount(){
+      await requestLocationPermission();
+ this.setState({ myLoc:await getGeoInfo()});
+ await this.getUserInfo();
+ this.setState({isLoading:false})
+//get the user's location
+
+   console.log("Just making sure:        ",this.state.myLoc);
+}
+
   async logout()
   {
       return await fetch ("http://10.0.2.2:3333/api/1.0.0/user/logout",
@@ -122,7 +158,10 @@ class MyAccountScreen extends React.Component {
                     longitudeDelta: 0.05
                   }}
                   >
-                  <Marker coordinate={{
+                  <Marker
+                   title={"Me!"}
+                   pinColor={'green'} 
+                   coordinate={{
                      latitude: this.state.myLoc.latitude,
                      
                      longitude:this.state.myLoc.longitude
@@ -146,6 +185,12 @@ class MyAccountScreen extends React.Component {
             onPress={()=> this.logout()}
           >
             <Text>Logout</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={()=> this.deleteAccount()}
+          >
+            <Text>Delete account</Text>
           </TouchableOpacity>
         </View>
       </View> 

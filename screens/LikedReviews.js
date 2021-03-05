@@ -2,15 +2,8 @@ import React, { Component } from 'react';
 import { ActivityIndicator, Text, StyleSheet, View, FlatList,ListItem, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import ReviewList from '../components/ReviewList';
-const Loader = () => (
-  <View style={{ minHeight: 230, padding: 20 }}>
-    <ActivityIndicator
-      color="#000"
-      size="large"
-      style={{ alignSelf: "center" }}
-    />
-  </View>
-);
+import Loader from '../components/Loader';
+
 class LikedReviews extends React.Component {
     constructor(props){
         super(props);
@@ -23,8 +16,10 @@ class LikedReviews extends React.Component {
   render(){
       console.log(this.state.likedReviews.toString())
     return (  
+      this.state.isLoading ? <Loader/> : (
 
             <ReviewList reviews={(this.state.likedReviews)} />
+      )
       );
   }
 }

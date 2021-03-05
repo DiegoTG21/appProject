@@ -9,29 +9,31 @@ class LikeButton extends Component {
             likes: this.props.likes,
             locID:this.props.locID,
             revID:this.props.revID,
-            userID:this.props.userID
+            userID:this.props.userID,
+            liked:false//liked is false so you cannot like it more than twice
+
       }
     };
-    showBtn=async()=>
+    decideLikeAction = () =>
     {
-            if(this.state.userID.toString()==await AsyncStorage.getItem('@userID')){
-                console.log("IDs matched!!");
-
-                return <Button  title={this.state.likes.toString()} />
-            }
-            else{
-                console.log("IDs didnt match");
-            return <Button title={this.state.likes.toString()} />
-            }
+        if (this.state.liked==false)
+        {
+            this.handleLike('POST',true);
         }
-    addLike =async () => {
+        else
+        {
+            this.handleLike('DELETE',false);
+        }
+    }
+    //status= true or false 
+    async handleLike(method,likedStatus) {
         //fetchj request
     return await fetch ("http://10.0.2.2:3333/api/1.0.0/location/"
         +this.state.locID+"/review/"
         +this.state.revID+"/like",
         {
         //set the type of request and and the auth. token
-        method: 'POST',
+        method: method,
         headers: { 
         'X-Authorization':await AsyncStorage.getItem('@sessionToken') },
         })
@@ -40,6 +42,19 @@ class LikeButton extends Component {
         if (response.status == 200) {
             ToastAndroid.show("Liked!", ToastAndroid.SHORT);
             console.log(response);
+            //update count
+            if(likedStatus==true)
+            {
+            this.setState({likes:this.state.likes+1})
+            ToastAndroid.show("Liked!", ToastAndroid.SHORT);
+
+            }
+            else{
+                this.setState({likes:this.state.likes-1});
+                ToastAndroid.show("Disliked:(", ToastAndroid.SHORT);
+
+            }
+            this.setState({liked:likedStatus})
         //if successful return object
         } else if (response.status == 400) {
         throw 'Bad request.';
@@ -52,8 +67,8 @@ class LikeButton extends Component {
     });
     };
     render() {
-        {console.log(this.state)}
-          return ( <Button  onPress={this.addLike} title={this.state.likes.toString()} />)
+          return ( <Button  onPress={this.decideLikeAction} title={this.state.likes.toString()} />)
       }
     };
+    
 export default LikeButton;    

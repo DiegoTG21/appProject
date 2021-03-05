@@ -25,6 +25,9 @@ class SearchScreen extends React.Component {
       priceRating:'',
       isLoading:true,
       location:'',
+      colourBtnAddRev:'grey',
+      colourBtnSeeLoc:'magenta',
+      addReview:true,//used to know what the user wants to do
       locs:[]
     }
   }
@@ -127,13 +130,50 @@ handlePriceRatQuery = (text) => {
         console.log("Show this.state.locs.location_id: ",this.state.locs);//show that the data is stored correctly
       });
     }
+   directToScreen(location)
+   {//go to the selected screen
+     if(this.state.addReview){
+      this.props.navigation.navigate('Add Review',{location:location})
+    }
+    else{
+      this.props.navigation.navigate("Shop's location",{location:location})
+    }
+   }
+   changeSelect(state)
+ {        
+      this.setState({addReview:state})
+      //both cannot be selected at the same time so the colours have to match
+      if(state==true)
+      {
+        this.setState({colourBtnAddRev:'grey'})
+        this.setState({colourBtnSeeLoc:'magenta'})
 
+      }
+      else{
+        this.setState({colourBtnAddRev:'magenta'})
+        this.setState({colourBtnSeeLoc:'grey'})
+      }
+      ToastAndroid.show("Select a location", ToastAndroid.SHORT);
+      //update the action
+ }
   render(){
-    const nav = this.props.navigation;
-
      return (   
         <View style={styles.page}>
-            <View>
+            <View style={styles.btnContainer}>
+            <TouchableOpacity style={[styles.optionBtn, {backgroundColor: this.state.colourBtnAddRev}]} 
+            onPress={()=>this.changeSelect(true)
+            //inform review list what to do with the selected review
+              } >
+              <Text style={styles.appButtonText}>Add a review</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.optionBtn, {backgroundColor: this.state.colourBtnSeeLoc}]} 
+            onPress={()=>this.changeSelect(false)  
+              //inform review list what to do with the selected review
+            } >
+              <Text style={styles.appButtonText}>See info</Text>
+            </TouchableOpacity>
+            </View>
+            <View style={styles.container}>
                 <TextInput  placeholder="Shop's name or location... " onChangeText={this.handleQuery} value= {this.state.queryName} id="name"/>
                 <TextInput maxLength={1}  keyboardType='numeric'
                  placeholder="Overall rating... " onChangeText={this.handleOverallRatQuery} value= {this.state.overallRatQuery} id="oveRat"/>
@@ -161,7 +201,7 @@ handlePriceRatQuery = (text) => {
                      style={styles.option}
                     // style={styles.button}
                      onPress={async()=>
-                     nav.navigate('Add Review',{location:item})
+                     this.directToScreen(item)
                      }
 
                    >
@@ -175,18 +215,20 @@ handlePriceRatQuery = (text) => {
 }
 }
 const styles = StyleSheet.create({
-  page:{
-    flex:10,
-    paddingTop:5
-  },
-  image:{
-        height: 400,
-        margin: 10,
-        borderWidth: 1,
-        borderColor: '#000000'
-        },
+    page:{
+      flex:10,
+      paddingTop:5
+    },
+    appButtonText:{
+      fontSize: 12,
+      color: "black",
+      fontWeight: "bold",
+      alignSelf: "center",
+      textTransform: "uppercase"
+    },
     container: {
       flex:15,
+      flexDirection: 'column',
       paddingHorizontal: 5,
       paddingVertical: 5,
       borderWidth: 2,
@@ -197,6 +239,31 @@ const styles = StyleSheet.create({
       shadowRadius: 2,
       margin: 20
     },
+    btnContainer:{
+      flex:1,
+      flexDirection: 'row',
+      marginVertical: 5
+      },
+      container: {
+        flex:5,
+        flexDirection: 'column',
+        justifyContent: 'center'
+      },
+    optionBtn: {
+      flex:1,
+      width:'40%',
+      borderRadius: 10,
+      borderColor:'black',
+      fontSize:30,
+      //align Vertically center
+      justifyContent: 'center',
+      // align horizontally center
+      alignItems: 'center',
+      backgroundColor: "magenta",
+      marginVertical: 5,
+      marginHorizontal: 5,
+      padding: 30
+      },
     button: {
       flex:1,
       borderRadius: 10,

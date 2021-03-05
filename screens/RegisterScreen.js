@@ -2,7 +2,8 @@ import * as React from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Text, TextInput, View, TouchableOpacity, StyleSheet, Alert,Button,ToastAndroid } from 'react-native';
 //import { NavigationContainer } from '@react-navigation/native';
- 
+import RNPasswordStrengthMeter from 'react-native-password-strength-meter';
+
 class RegisterScreen extends React.Component {
   constructor(props){
     super(props);
@@ -120,8 +121,9 @@ addNewUser(){
           <TextInput placeholder="First name... " onChangeText={this.handleFName} value= {this.state.first_name} id="fname"/>
           <TextInput placeholder="Last name... " onChangeText={this.handleSName} value= {this.state.last_name}id="sname"/>
           <TextInput placeholder="Email... "type="email" onChangeText={this.handleEmail} value= {this.state.email}id="email"/>
-          <TextInput placeholder="Password... " type="password"  onChangeText={this.handlePassword} id="password"/>
-          <TextInput placeholder="Password... " type="password"  onChangeText={this.handleConfirmPassword}id="conpassword" />
+          <RNPasswordStrengthMeter  meterType="bar"
+          placeholder="Password... " type="password"  onChangeText={this.handleConfirmPassword}id="conpassword" />
+          <TextInput secureTextEntry={true} placeholder="Confirm password... " type="password"  onChangeText={this.handlePassword} id="password"/>
           <TouchableOpacity
             style={styles.button}
             onPress={()=> this.validate(this.state)}

@@ -3,16 +3,9 @@ import {View,Text,TouchableOpacity,StyleSheet,FlatList,ActivityIndicator} from '
 import MapView, {PROVIDER_GOOGLE,Marker} from 'react-native-maps';
 import LocReview from '../components/LocReview';
 import {requestLocationPermission,getGeoInfo,calculatePreciseDistance} from '../components/MapFuncs';
+import Loader from '../components/Loader';
 
-const Loader = () => (
-  <View style={{ minHeight: 230, padding: 20 }}>
-    <ActivityIndicator
-      color="#000"
-      size="large"
-      style={{ alignSelf: "center" }}
-    />
-  </View>
-);
+
 class LocationScreen extends Component {
     constructor(props){
         super(props);

@@ -6,17 +6,10 @@ import { TextInput, Text, ActivityIndicator, View, FlatList,TouchableOpacity, St
 import AsyncStorage from '@react-native-community/async-storage';
 import MyBtn from '../components/MyBtn';
 import {requestLocationPermission,getGeoInfo,calculatePreciseDistance} from '../components/MapFuncs';
+import Loader from '../components/Loader';
 
  //import {t,getLan}from '../locales/getLan';
- const Loader = () => (
-  <View style={{ minHeight: 230, padding: 20 }}>
-    <ActivityIndicator
-      color="#000"
-      size="large"
-      style={{ alignSelf: "center" }}
-    />
-  </View>
-);
+
 class DiscoveryScreen extends React.Component {
   constructor(props){
     super(props);
@@ -89,7 +82,7 @@ class DiscoveryScreen extends React.Component {
     const nav = this.props.navigation;
 
      return (   
-      this.state.isLoading ? <Loader/> : (
+      this.state.isLoading ? <Loader/> : (//show a list with locations 
 
         <View style={styles.page}>
           <Text style={styles.text}> Pick a location to find out more</Text>

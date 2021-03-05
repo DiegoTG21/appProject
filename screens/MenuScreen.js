@@ -15,31 +15,31 @@ class MenuScreen extends Component{
             style={styles.button}
             onPress={()=>nav.navigate('Find the location')}
           >
-            <Text>Add review</Text>
+            <Text style={styles.appButtonText}>Add review</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
             onPress={()=> nav.navigate('Discover')}
           >
-            <Text>Discover</Text>
+          <Text style={styles.appButtonText}>Discover</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
             onPress={()=> nav.navigate('Search')}
           >
-            <Text>Search</Text>
+            <Text style={styles.appButtonText}>Search</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
             onPress={()=> nav.navigate('My Reviews')}
           >
-            <Text>My reviews</Text>
+            <Text style={styles.appButtonText}>My reviews</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
             onPress={()=> nav.navigate('My Account')}
           >
-            <Text>My account</Text>
+            <Text style={styles.appButtonText}>My account</Text>
           </TouchableOpacity>
         </View>
     );
@@ -50,6 +50,13 @@ const styles = StyleSheet.create({
   page:{
     flex:10,
     paddingTop:5
+  },
+  appButtonText:{
+    fontSize: 20,
+    color: "black",
+    fontWeight: "bold",
+    alignSelf: "center",
+    textTransform: "uppercase"
   },
     container: {
       flex: 1,

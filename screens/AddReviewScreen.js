@@ -2,16 +2,17 @@ import React, { Component } from 'react';
 import { TextInput, Text, Button, View, FlatList, TouchableOpacity,StyleSheet,ToastAndroid } from 'react-native';
 import Stars from 'react-native-stars';
 import AsyncStorage from '@react-native-community/async-storage';
-import { roundToNearestPixel } from 'react-native/Libraries/Utilities/PixelRatio';
+import Filter from 'bad-words';
+const forbiddenWords=["tea","pastries","food","cakes","cake", "chocalate","Tea","Pastries","Food","Cakes","Cake", "Chocalate"]
 class AddReviewScreen extends Component {
     constructor(props){
         super(props);
  
         this.state={
-          overall_rating:'',
-          price_rating:'',
-          quality_rating:'',
-          clenliness_rating:'',
+          overall_rating:2.5,
+          price_rating:2.5,
+          quality_rating:2.5,
+          clenliness_rating:2.5,
           review_body:'',
           pickerSelLoc:'',
           location:props.route.params.location,
@@ -23,7 +24,33 @@ class AddReviewScreen extends Component {
     //set the review 
   this.setState({review_body:review})
   }
+  async sendReview()
+  {
+    if(this.coffeeDaFilter(this.state.review_body)!==true){
+      //add review then go to home screen
+      this.addNewReview().then(()=>
+      {this.props.navigation.navigate('Home') });
+    }
+    else{
+      ToastAndroid.show("Only talk about coffee :)",ToastAndroid.SHORT);
+    }
+  }
+  //filter certain words
+  coffeeDaFilter(text)
+  {
+    for (var i = 0; i < forbiddenWords.length; i++) {
+      if (text.includes(forbiddenWords[i]) || text.includes(forbiddenWords[i])) {
+       //if a forbidden word is found let the user know
+       console.log("never true")
+       return true
+      }
+    }
+  }
+  //adds review to the DB
   async addNewReview(){
+      //filters the review 
+      const filter = new Filter();
+   
     //console.log("http://10.0.2.2:3333/api/1.0.0/location/"+this.state.location.location_id+"/review")
     return fetch("http://10.0.2.2:3333/api/1.0.0/location/"+this.state.location.location_id+"/review",
     {
@@ -36,7 +63,7 @@ class AddReviewScreen extends Component {
         price_rating: parseInt(this.state.price_rating, 10),
         quality_rating: parseInt(this.state.quality_rating, 10),
         clenliness_rating: parseInt(this.state.clenliness_rating, 10),
-        review_body:this.state.review_body
+        review_body: filter.clean(this.state.review_body)
       })
     })
     .then((response)=>
@@ -115,8 +142,7 @@ class AddReviewScreen extends Component {
                 />
                 <TouchableOpacity
                 style={styles.button}
-                onPress={()=>this.addNewReview().then(()=>
-                  {this.props.navigation.navigate('Home') })}//}
+                onPress={()=>this.sendReview()}//}
                 >
                 <Text>Submit</Text>
             </TouchableOpacity>

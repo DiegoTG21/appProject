@@ -11,7 +11,7 @@ class AddPhoto extends Component{
     let locationID=5;
     let reviewID=13;
 
-    return fetch("http://10.0.2.2:3333/api/1.0.0/location/"+locationID+"/review/"+reviewID+"/photo",
+    return fetch("http://10.0.2.2:3333/api/1.0.0/location/"+await AsyncStorage.getItem('@locID')+"/review/"+await AsyncStorage.getItem('@reviewID')+"/photo",
     {
       method: 'POST',
       headers: {
@@ -26,6 +26,7 @@ class AddPhoto extends Component{
         ToastAndroid.show("Uploaded!",ToastAndroid.SHORT);
     }
     else{
+      console.log("Status" ,response.status)
         ToastAndroid.show('Invalid',ToastAndroid.SHORT);
 
     }
