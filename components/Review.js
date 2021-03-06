@@ -1,21 +1,24 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, Text, Button, View, FlatList, Image,StyleSheet,TouchableOpacity } from 'react-native';
+import { Text,View, Dimensions, Image,StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Stars from 'react-native-stars';
 import AsyncStorage from '@react-native-community/async-storage';
 import LikeButton from './LikeButton';
+import Loader from './Loader';
+import {getPic} from './functions/getPic';
+
+//used to display the pictures
+const SCREEN_WIDTH = Dimensions.get("window").width;
 class Review extends Component {
     constructor(props){
         super(props);
         this.state={
           review:this.props.data,
-          displayImage:true,
           isLoading: true,
-          gotImage:false ,
           picture:''  
          }
     }
-    async getPic(review){
+    async  getPic(review){
         console.log("http://10.0.2.2:3333/api/1.0.0/location/"+  review.location.location_id +"/review/" +review.review.review_id)
               return await fetch ("http://10.0.2.2:3333/api/1.0.0/location/"+  review.location.location_id +"/review/"
                +review.review.review_id+ "/photo",
@@ -30,12 +33,8 @@ class Review extends Component {
             console.log("almost there")
             if (response.status == 200) {
               //if successful return object
-              console.log(response.body)
-
-              this.setState({gotImage: true})
-              this.setState({image: response})
-
-              console.log(response)
+              return response.url
+    
             } else if( response.status == 404) {
               console.log("No picture found") ;
             } else {
@@ -52,25 +51,25 @@ class Review extends Component {
     onErrorLoadingImg=()=>
         {
             console.log("Error loading pic");
-            this.setState({displayImage:false})
         }
         async componentDidMount(){
             this.setState({ review: this.props.data});
+            this.setState({image: await getPic(this.state.review)})
             this.setState({ isLoading:false});
-            await this.getPic(this.state.review)
+
         }
     render(){
         const review=this.props.data;
-        console.log("see the review: ",review);
+        // console.log("see the review: ", review);
         
         return(
+          this.state.isLoading ? <Loader/> : (
             <View style={styles.container}>
                 <View style={styles.review} >
                     <Text style={styles.nameText} >{`${review.location.location_name}, ${review.location.location_town}` }</Text>
                     <Text style={styles.text} >Overall rating:</Text>
                     {/* these stars allow the user to add reviews from 0 to 5  */}
                     <Stars
-                    half={true}
                     display={review.review.overall_rating}
                     spacing={4}
                     starSize={45}
@@ -80,7 +79,6 @@ class Review extends Component {
                     halfStar={require('./images/starHalf.png')}/>
                     <Text style={styles.text}>Price rating:</Text>
                     <Stars
-                    half={true}
                     display={review.review.price_rating}
                     spacing={4}
                     starSize={35}
@@ -90,7 +88,6 @@ class Review extends Component {
                     halfStar={require('./images/starHalf.png')}/>
                     <Text style={styles.text}>Quality rating:</Text>
                     <Stars
-                    half={true}
                     display={review.review.quality_rating}
                     spacing={4}
                     starSize={35}
@@ -100,7 +97,6 @@ class Review extends Component {
                     halfStar={require('./images/starHalf.png')}/>
                     <Text style={styles.text}>Clenliness rating:</Text>
                     <Stars
-                    half={true}
                     display={review.review.clenliness_rating}
                     spacing={4}
                     starSize={35}
@@ -111,12 +107,12 @@ class Review extends Component {
                     <Text style={styles.textReview}>"{review.review.review_body}"</Text>
                    
                 </View> 
-                { this.state.gotImage ? 
+                { this.state.image ? 
                     <Image 
                         style={styles.image}
-                        source={this.state.picture}
+                        source={{uri: (this.state.image)}}
                         onError={this.onErrorLoadingImg}
-                        /> : (<Text>No photos avaliable</Text>)
+                        /> : (<Text>No photos avaliable</Text>)//if there is not a photo avaliable
                     }
                 <LikeButton 
                     likes={review.review.likes}
@@ -124,16 +120,16 @@ class Review extends Component {
                     userID={review.review.review_user_id}
                     locID={review.location.location_id} />
             </View>
+          )
         );
     }
 }
 const styles = StyleSheet.create({    
     image:{
-        height: 400,
-        width:'90%',
-        margin: 10,
-        borderWidth: 1,
-        borderColor: '#000000'
+        height:SCREEN_WIDTH* 0.70,
+        width:SCREEN_WIDTH* 0.70,
+        marginVertical: 4
+
      },
      nameText :{
         fontSize: 20,

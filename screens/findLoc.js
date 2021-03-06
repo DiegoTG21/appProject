@@ -5,7 +5,7 @@ import { TextInput, Text, ActivityIndicator, View, FlatList,TouchableOpacity, St
 // import Geolocation from 'react-native-geolocation-service';
 import AsyncStorage from '@react-native-community/async-storage';
  import buttonStyle from '../styles';
- import {requestLocationPermission,getGeoInfo,calculatePreciseDistance} from '../components/MapFuncs';
+ import {requestLocationPermission,getGeoInfo,calculatePreciseDistance} from '../components/functions/MapFuncs';
  import Loader from '../components/Loader';
 
  //import {t,getLan}from '../locales/getLan';

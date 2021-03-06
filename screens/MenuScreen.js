@@ -37,6 +37,12 @@ class MenuScreen extends Component{
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
+            onPress={()=> nav.navigate('Upload Photo')}
+          >
+            <Text style={styles.appButtonText}>Upload photo</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
             onPress={()=> nav.navigate('My Account')}
           >
             <Text style={styles.appButtonText}>My account</Text>

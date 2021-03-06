@@ -1,5 +1,5 @@
 import Geolocation from 'react-native-geolocation-service';
-import {Alert,PermissionsAndroid } from 'react-native';
+import {PermissionsAndroid } from 'react-native';
 import { getPreciseDistance} from 'geolib';
 
   //ask the user for permission to use their location
@@ -56,7 +56,7 @@ import { getPreciseDistance} from 'geolib';
 }
 export function getIcon  () {
   var icon = {
- url:require('../components/images/meIcon.png') ,
+ url:require('../images/meIcon.png') ,
   scaledSize:(50, 50), // scaled size
   }
   return icon

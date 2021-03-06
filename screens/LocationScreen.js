@@ -2,7 +2,7 @@ import React, { Component} from 'react';
 import {View,Text,TouchableOpacity,StyleSheet,FlatList,ActivityIndicator} from 'react-native';
 import MapView, {PROVIDER_GOOGLE,Marker} from 'react-native-maps';
 import LocReview from '../components/LocReview';
-import {requestLocationPermission,getGeoInfo,calculatePreciseDistance} from '../components/MapFuncs';
+import {requestLocationPermission,getGeoInfo,calculatePreciseDistance} from '../components/functions/MapFuncs';
 import Loader from '../components/Loader';
 
 
@@ -83,7 +83,7 @@ class LocationScreen extends Component {
                   // onEndReachedThreshold={0.1}
 
                   renderItem={({ item }) => 
-                  <LocReview data={item} />
+                  <LocReview locationID= {location.location_id} data={item} />
                   }
                   />
             </View>  
@@ -97,9 +97,11 @@ const styles = StyleSheet.create({
         flex:10,
         paddingTop:5
       },
-    nameText :{
+      nameText :{
         fontSize: 18,
         color: 'black',
+        textShadowColor: "magenta",
+        textShadowRadius: 2,
         fontWeight: 'bold',
         alignContent: 'center',
         textAlign:'center'

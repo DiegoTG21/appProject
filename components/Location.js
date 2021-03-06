@@ -27,10 +27,7 @@ class Location extends Component {
             <Button onPress={() => console.log(this.state.location )} title="show on log" /> 
      </View>
     };
-    showMoreInfo()
-    {
 
-    };
     render()
     {
         const location=this.props.data;

@@ -4,7 +4,7 @@ import { TextInput, Text, ListItem, View, FlatList,TouchableOpacity, StyleSheet,
 // import {requestLocationPermission,getCoordinates} from '../components/LocPermissions';
 // import Geolocation from 'react-native-geolocation-service';
 import AsyncStorage from '@react-native-community/async-storage';
- import buttonStyle from '../styles';
+//  import buttonStyle from '../styles';
  //import {t,getLan}from '../locales/getLan';
 
 class SearchScreen extends React.Component {
@@ -188,7 +188,7 @@ handlePriceRatQuery = (text) => {
             </View>
                 
             <TouchableOpacity onPress={()=>this.getLocs()} style={styles.button}>
-              <Text style={buttonStyle}>Find Location</Text>
+              <Text style={styles.appButtonText}>Find Location</Text>
             </TouchableOpacity>
             
                 <View style={styles.container}>

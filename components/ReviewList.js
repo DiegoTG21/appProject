@@ -1,27 +1,17 @@
 import React, { Component } from 'react';
-import { confirmAlert } from 'react-confirm-alert'; 
-import { ActivityIndicator, StyleSheet, Text, View, FlatList, TouchableOpacity,ToastAndroid,Alert} from 'react-native';
+import {StyleSheet, View, FlatList, TouchableOpacity,ToastAndroid,Alert} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Review from './Review';
-import AddPhoto from '../screens/AddPhoto';
+import {endToServer} from './functions/uploadPic';
 
-const Loader = () => (
-  <View style={{ minHeight: 230, padding: 20 }}>
-    <ActivityIndicator
-      color="#000"
-      size="large"
-      style={{ alignSelf: "center" }}
-    />
-  </View>
-);
- 
+
 class ReviewList extends Component {
     constructor(props){
         super(props);
         this.state={
-          reviews:this.props.reviews,
-          reviewSelected:false
-        }
+          picture:'',
+          reviews:this.props.reviews
+          }
     }
 
     //comfirm delete action
@@ -50,30 +40,61 @@ class ReviewList extends Component {
       });
     } 
     //take in the action and the selected review and make a decision
-    async decideNextStep(action,review)
+    async decideNextStep(action,review,image)
     {
+      // await AsyncStorage.setItem('@picUploadedIndicator', "false");
       this.setState({reviewSelected:true})
-      if(action=="delete"){
-        //dont show camera
-        //ask the user to confirm and then delete
+
+      if(action=="addPicture"){//if the user wants to upload a picture
+
+        endToServer(image,review)
+      }
+      else{       
+      //ask the user to confirm and then delete
         await this.askForConfirmation().then((cancel)=>{
         if(cancel==false)
         {
+          if(action=="delete"){//if delete review
           console.log("Going to delete")
-          this.deleteReview(review)}
+          this.deleteReview(review)
+        } 
+        else{// delete photo
+          this.deletePhoto(review)
+         }
+        }
         else{
           console.log("You cancelled");
 
         } }).catch((error) => {
           console.error(error);
         })
-      }
-      else{// add photo
-        //store the loc id and review id 
-        await AsyncStorage.setItem('@locID', review.location.location_id.toString());
-        await AsyncStorage.setItem('@reviewID', review.review.review_id.toString());
-        this.setState({showRevs:false})
-       }
+     }
+
+    }
+    async deletePhoto(review)
+    {
+      return fetch("http://10.0.2.2:3333/api/1.0.0/location/"+review.location.location_id.toString()+
+      "/review/"+ review.review.review_id.toString()+"/photo",
+    {
+      method: 'DELETE',
+      headers: {
+        "X-Authorization": await AsyncStorage.getItem('@sessionToken')
+      },
+    })
+    .then(async (response) => {
+    if (response.status===200)
+    {
+        ToastAndroid.show("Photo deleted!",ToastAndroid.SHORT);
+    }
+    else{
+      console.log("Status" ,response.status)
+        ToastAndroid.show('Opps!',ToastAndroid.SHORT);
+
+    }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
     }
     //delete from flatlist
     deleteItemById(id) {
@@ -110,18 +131,16 @@ class ReviewList extends Component {
         });
       
       }
+      async componentDidMount(){
+      this.setState({ uploadedPic: await AsyncStorage.getItem('@picUploadedIndicator') });
+      }
 render(){
     const selectIndicator= this.props.selectIndicator;
     const actionOnSelect= this.props.actionOnSelect;
+    const image= this.props.image;
+
    //  console.log("review lists checkpoint: ",reviews);
     return(
-      
-      this.state.isLoading ? <Loader/> : (
-        
-        (actionOnSelect=="addPic"&& selectIndicator && this.state.reviewSelected)  ? 
-               <AddPhoto/> 
-             :(
-                 //if the user is not adding a picture
             <View>
                 <FlatList
                 data={this.state.reviews}
@@ -133,7 +152,7 @@ render(){
                 {                                                       
                   if (selectIndicator ==true) {
                      return (   
-                       <TouchableOpacity onPress={()=>{this.decideNextStep(actionOnSelect,item)}} >
+                       <TouchableOpacity onPress={()=>{this.decideNextStep(actionOnSelect,item,image)}} >
                      <Review data={item} /></TouchableOpacity>
                      )
                     }
@@ -145,8 +164,6 @@ render(){
                 }}
                 />
              </View>
-              )
-              )
             );
         }
   }

@@ -5,7 +5,7 @@ import { TextInput, Text, ActivityIndicator, View, FlatList,TouchableOpacity, St
 // import Geolocation from 'react-native-geolocation-service';
 import AsyncStorage from '@react-native-community/async-storage';
 import MyBtn from '../components/MyBtn';
-import {requestLocationPermission,getGeoInfo,calculatePreciseDistance} from '../components/MapFuncs';
+import {requestLocationPermission,getGeoInfo,calculatePreciseDistance} from '../components/functions/MapFuncs';
 import Loader from '../components/Loader';
 
  //import {t,getLan}from '../locales/getLan';
@@ -85,7 +85,7 @@ class DiscoveryScreen extends React.Component {
       this.state.isLoading ? <Loader/> : (//show a list with locations 
 
         <View style={styles.page}>
-          <Text style={styles.text}> Pick a location to find out more</Text>
+          <Text style={styles.titleText}> Pick a location to find out more</Text>
                 <View style={styles.container}>
                 <FlatList
                     data={this.state.locs}
@@ -115,18 +115,13 @@ const styles = StyleSheet.create({
       flex:10,
       paddingTop:5
     },
-     text :{
-    fontSize: 18,
+  titleText :{
+    fontSize: 20,
     color: 'black',
     fontWeight: 'bold',
     alignContent: 'center',
-    textAlign:'center'
-  },
-  nameText :{
-    fontSize: 18,
-    color: 'black',
-    fontWeight: 'bold',
-    alignContent: 'center',
+    textShadowColor: "magenta",
+    textShadowRadius: 2,
     textAlign:'center'
   },
     image:{

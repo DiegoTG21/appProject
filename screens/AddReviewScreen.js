@@ -92,8 +92,7 @@ class AddReviewScreen extends Component {
             <View>
                 <Text>Overall rating</Text>
                 <Stars
-                half={true}
-                default={2.5}
+                default={0}
                 update={(val)=>{this.setState({overall_rating: val})}}
                 spacing={4}
                 starSize={45}
@@ -103,8 +102,7 @@ class AddReviewScreen extends Component {
                 halfStar={require('./images/starHalf.png')}/>
                 <Text>Price rating</Text>
                 <Stars
-                half={true}
-                default={2.5}
+                default={0}
                 update={(val)=>{this.setState({price_rating: val})}}
                 spacing={4}
                 starSize={35}
@@ -114,8 +112,7 @@ class AddReviewScreen extends Component {
                 halfStar={require('./images/starHalf.png')}/>
                 <Text>Quality rating</Text>
                 <Stars
-                half={true}
-                default={2.5}
+                default={0}
                 update={(val)=>{this.setState({quality_rating: val})}}
                 spacing={4}
                 starSize={35}
@@ -125,8 +122,7 @@ class AddReviewScreen extends Component {
                 halfStar={require('./images/starHalf.png')}/>
                 <Text>Clenliness rating</Text>
                 <Stars
-                half={true}
-                default={2.5}
+                default={0}
                 update={(val)=>{this.setState({clenliness_rating: val})}}
                 spacing={4}
                 starSize={35}

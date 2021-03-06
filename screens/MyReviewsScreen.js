@@ -3,6 +3,7 @@ import { ActivityIndicator, Text, ToastAndroid, View, FlatList,StyleSheet, Touch
 import AsyncStorage from '@react-native-community/async-storage';
 import ReviewList from '../components/ReviewList';
 import Loader from '../components/Loader';
+import {getUserReviews} from '../components/functions/getUserReviews';
 
 class MyReviewsScreen extends React.Component {
   constructor(props){
@@ -13,55 +14,21 @@ class MyReviewsScreen extends React.Component {
       actionOnSelect:'',
       colourBtnDelete:'magenta',
       colourBtnAddPic:'magenta',
+      // picUploadedIndicator:'',
       isLoading: true
 
     }
   }
-  async getUserReviews(){
-  return await fetch ("http://10.0.2.2:3333/api/1.0.0/user/"+ await AsyncStorage.getItem('@userID'),//change for the final version
-      {
-        //set the type of request and and the auth. token
-        method: 'GET',
-        headers: { 
-        'X-Authorization':await AsyncStorage.getItem('@sessionToken') },
-      })
-     .then((response)=>
-     {
-      if (parseInt(response.status,10) == 200) {
-        //if successful return object
-        return response.json()
-      } else if (parseInt(response.status,10) == 400) {
-        throw 'Bad request.';
-      } else {
-        throw 'Problem getting data.';
-      }
-     })
-     .then(async (responseJson)=> { 
-      //onsole.log("json object:   ", responseJson.reviews);
-     // await AsyncStorage.setItem('@userData', {responseJson});
-      
-      return responseJson.reviews;
-
-     }).then(async (reviews)=> {
-      this.setState({reviews:reviews});
-     })
-    .catch((error) => {
-      console.error(error);
-    }).finally(() => {
-      this.setState({ isLoading: false });
-      console.log("done loading");
-    });
-  }
+  
   openMap = (location)=>
   {
     this.props.navigation.navigate("Shop's location",{location: location})
   };
-  async componentDidMount(){
-    await this.getUserReviews();
-    console.log("Just making sure:        ",this.state.reviews);
-  }
- changeSelect(action)
- {        
+
+   changeSelect(action)
+ {   
+      //used to let other components know when a picture is uploaded, if the mode changes it resets 
+    // await AsyncStorage.setItem('@picUploadedIndicator', "false");     
    //change the selection mode and change colours so the user knows
     if(this.state.selectIndicator==true && action==this.state.actionOnSelect){
       this.setState({selectIndicator:false})
@@ -90,17 +57,25 @@ class MyReviewsScreen extends React.Component {
 
     } 
 
- }
+   }
+     async componentDidMount(){
+      this.setState({reviews:await getUserReviews()});
+     console.log("Just making sure:        ",this.state.reviews);
+       //used to let other components know when a picture is uploaded
+  // await AsyncStorage.setItem('@picUploadedIndicator', "false");
+  // this.setState({picUploadedIndicator:await AsyncStorage.getItem('@picUploadedIndicator')})
+  this.setState({ isLoading: false });
+  }
   render(){
     return (  
       this.state.isLoading ? <Loader/> : (
       <View style={styles.page}>
         <View style={styles.btnContainer}>
         <TouchableOpacity style={[styles.button, {backgroundColor: this.state.colourBtnAddPic}]} 
-        onPress={()=>this.changeSelect("addPic")
+        onPress={()=>this.changeSelect("deletePic")
          //inform review list what to do with the selected review
           } >
-          <Text style={styles.appButtonText}>Add a photo</Text>
+          <Text style={styles.appButtonText}>Delete photos</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.button, {backgroundColor: this.state.colourBtnDelete}]} 
         onPress={()=>this.changeSelect("delete")  
@@ -113,6 +88,7 @@ class MyReviewsScreen extends React.Component {
           <ReviewList reviews={(this.state.reviews) } 
           selectIndicator={this.state.selectIndicator}
           actionOnSelect={this.state.actionOnSelect}
+          // picUploadedIndicator={this.state.picUploadedIndicator}
           />
          </View>
      </View>
