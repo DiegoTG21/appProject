@@ -4,6 +4,7 @@ import { RNCamera } from 'react-native-camera';
 import AsyncStorage from '@react-native-community/async-storage';
 import ReviewList from '../components/ReviewList';
 import {getUserReviews} from '../components/functions/getUserReviews';
+import styles from '../basic.styles.js'
 
 
 class AddPhoto extends Component{
@@ -52,53 +53,24 @@ class AddPhoto extends Component{
             style={styles.button}
             onPress={()=>  this.takePicture()}
           >
-            <Text>Take Photo</Text>
+            <Text style={styles.appButtonText}>Take Photo</Text>
           </TouchableOpacity>
         {/* <Button title="Take Photo" onPress={() => this.takePicture()} /> */}
       </View>
          : (
-        <ReviewList reviews={(this.state.reviews) } 
-        selectIndicator={true}//meaning that the user is going to select something
-        image={this.state.image}
-        actionOnSelect={"addPicture"}
-        // picUploadedIndicator={this.state.picUploadedIndicator}
-        />
+        <View>
+          <Text style={styles.text}>Select the review you would like to add the photo to</Text>
+
+          <ReviewList reviews={(this.state.reviews) } 
+          selectIndicator={true}//meaning that the user is going to select something
+          image={this.state.image}
+          actionOnSelect={"addPicture"}
+          // picUploadedIndicator={this.state.picUploadedIndicator}
+          />
+        </View>
       )
     );
   }
 
 }
-const styles = StyleSheet.create({
-    container: {
-      flex: 10,
-      justifyContent: "center",
-      paddingHorizontal: 5,
-      paddingVertical: 5,
-      borderWidth: 2,
-      borderColor: '#000000',
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.8,
-      shadowRadius: 2,
-      height:200,
-      margin: 20,
-      alignItems: 'center',
-      justifyContent: 'center'
-    },
-    button: {
-      flex:1,
-      borderRadius: 10,
-      borderColor:'black',
-      fontSize:30,
-      //align Vertically center
-      justifyContent: 'center',
-      // align horizontally center
-      alignItems: 'center',
-      backgroundColor: "magenta",
-      marginVertical: 10,
-      marginHorizontal: 10,
-      padding: 10
-
-    }
-     });
 export default AddPhoto;

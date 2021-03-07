@@ -4,7 +4,7 @@ import { TextInput, Text, ListItem, View, FlatList,TouchableOpacity, StyleSheet,
 // import {requestLocationPermission,getCoordinates} from '../components/LocPermissions';
 // import Geolocation from 'react-native-geolocation-service';
 import AsyncStorage from '@react-native-community/async-storage';
-//  import buttonStyle from '../styles';
+import styles from '../basic.styles.js'
  //import {t,getLan}from '../locales/getLan';
 
 class SearchScreen extends React.Component {
@@ -174,14 +174,14 @@ handlePriceRatQuery = (text) => {
             </TouchableOpacity>
             </View>
             <View style={styles.container}>
-                <TextInput  placeholder="Shop's name or location... " onChangeText={this.handleQuery} value= {this.state.queryName} id="name"/>
-                <TextInput maxLength={1}  keyboardType='numeric'
+                <TextInput style={styles.inputText}  placeholder="Shop's name or location... " onChangeText={this.handleQuery} value= {this.state.queryName} id="name"/>
+                <TextInput style={styles.inputText} maxLength={1}  keyboardType='numeric'
                  placeholder="Overall rating... " onChangeText={this.handleOverallRatQuery} value= {this.state.overallRatQuery} id="oveRat"/>
-                <TextInput maxLength={1}  keyboardType='numeric'
+                <TextInput style={styles.inputText} maxLength={1}  keyboardType='numeric'
                 placeholder="Quality rating... " onChangeText={this.handleQualityRatQuery} value= {this.state.qualityRating} id="qualRat"/>
-                <TextInput maxLength={1}  keyboardType='numeric'
-                placeholder="Clenliness rating... " onChangeText={this.handleClenlinessRatQuery} value= {this.state.clenlinessRating} id="clenRat"/>
-                <TextInput maxLength={1}  keyboardType='numeric'
+                <TextInput style={styles.inputText} maxLength={1}  keyboardType='numeric'
+                placeholder="Cleanliness rating... " onChangeText={this.handleClenlinessRatQuery} value= {this.state.clenlinessRating} id="clenRat"/>
+                <TextInput style={styles.inputText} maxLength={1}  keyboardType='numeric'
                 placeholder="Price rating... " onChangeText={this.handlePriceRatQuery} value= {this.state.priceRating} id="priceRat"/>
 
 
@@ -214,80 +214,6 @@ handlePriceRatQuery = (text) => {
   );
 }
 }
-const styles = StyleSheet.create({
-    page:{
-      flex:10,
-      paddingTop:5
-    },
-    appButtonText:{
-      fontSize: 12,
-      color: "black",
-      fontWeight: "bold",
-      alignSelf: "center",
-      textTransform: "uppercase"
-    },
-    container: {
-      flex:15,
-      flexDirection: 'column',
-      paddingHorizontal: 5,
-      paddingVertical: 5,
-      borderWidth: 2,
-      borderColor: '#000000',
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.8,
-      shadowRadius: 2,
-      margin: 20
-    },
-    btnContainer:{
-      flex:1,
-      flexDirection: 'row',
-      marginVertical: 5
-      },
-      container: {
-        flex:5,
-        flexDirection: 'column',
-        justifyContent: 'center'
-      },
-    optionBtn: {
-      flex:1,
-      width:'40%',
-      borderRadius: 10,
-      borderColor:'black',
-      fontSize:30,
-      //align Vertically center
-      justifyContent: 'center',
-      // align horizontally center
-      alignItems: 'center',
-      backgroundColor: "magenta",
-      marginVertical: 5,
-      marginHorizontal: 5,
-      padding: 30
-      },
-    button: {
-      flex:1,
-      borderRadius: 10,
-      borderColor:'black',
-      fontSize:30,
-      //align Vertically center
-      justifyContent: 'center',
-      // align horizontally center
-      alignItems: 'center',
-      backgroundColor: "magenta",
-      marginVertical: 20,
-      marginHorizontal: 12,
-      padding: 30
-    },
-    option: {
-      flex:1,
-      //align Vertically center
-      justifyContent: 'center',
-      // align horizontally center
-      alignItems: 'center',
-      backgroundColor: "#D3D3D3",
-      marginVertical: 1,
-      padding: 10
-    }
-     });
+
 export default SearchScreen;
   

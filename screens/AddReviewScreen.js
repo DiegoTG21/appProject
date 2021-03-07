@@ -3,16 +3,18 @@ import { TextInput, Text, Button, View, FlatList, TouchableOpacity,StyleSheet,To
 import Stars from 'react-native-stars';
 import AsyncStorage from '@react-native-community/async-storage';
 import Filter from 'bad-words';
+import styles from '../basic.styles.js';
+
 const forbiddenWords=["tea","pastries","food","cakes","cake", "chocalate","Tea","Pastries","Food","Cakes","Cake", "Chocalate"]
 class AddReviewScreen extends Component {
     constructor(props){
         super(props);
  
         this.state={
-          overall_rating:2.5,
-          price_rating:2.5,
-          quality_rating:2.5,
-          clenliness_rating:2.5,
+          overall_rating:null,
+          price_rating:null,
+          quality_rating:null,
+          clenliness_rating:null,
           review_body:'',
           pickerSelLoc:'',
           location:props.route.params.location,
@@ -45,6 +47,25 @@ class AddReviewScreen extends Component {
        return true
       }
     }
+  }
+  checkInputs()
+  {
+    let isValid = true;
+  //if a value is missing
+  if (! this.state.overall_rating || ! this.state.price_rating ||! this.state.clenliness_rating ||! this.state.quality_rating) {
+    isValid = false;
+    ToastAndroid.show("Tap the stars to add a rating.", ToastAndroid.SHORT);
+
+  }
+  if (! this.state.review_body) {
+    isValid = false;
+    ToastAndroid.show("Please tell us your opinion.", ToastAndroid.SHORT);
+
+  }
+  if(isValid)
+  {//if valid upload review
+    this.sendReview()
+  }
   }
   //adds review to the DB
   async addNewReview(){
@@ -88,9 +109,9 @@ class AddReviewScreen extends Component {
       //this.state.setState({location:this.props.params.location})
       return (
         <View> 
-            <Text>Location: {this.state.location.location_name}</Text>       
+            <Text style={styles.nameText}>Location: {this.state.location.location_name}</Text>       
             <View>
-                <Text>Overall rating</Text>
+                <Text style={styles.text}>Overall rating</Text>
                 <Stars
                 default={0}
                 update={(val)=>{this.setState({overall_rating: val})}}
@@ -100,7 +121,7 @@ class AddReviewScreen extends Component {
                 fullStar={require('./images/starFilled.png')}
                 emptyStar={require('./images/starEmpty.png')}
                 halfStar={require('./images/starHalf.png')}/>
-                <Text>Price rating</Text>
+                <Text style={styles.text}>Price rating</Text>
                 <Stars
                 default={0}
                 update={(val)=>{this.setState({price_rating: val})}}
@@ -110,7 +131,7 @@ class AddReviewScreen extends Component {
                 fullStar={require('./images/starFilled.png')}
                 emptyStar={require('./images/starEmpty.png')}
                 halfStar={require('./images/starHalf.png')}/>
-                <Text>Quality rating</Text>
+                <Text style={styles.text}>Quality rating</Text>
                 <Stars
                 default={0}
                 update={(val)=>{this.setState({quality_rating: val})}}
@@ -120,7 +141,7 @@ class AddReviewScreen extends Component {
                 fullStar={require('./images/starFilled.png')}
                 emptyStar={require('./images/starEmpty.png')}
                 halfStar={require('./images/starHalf.png')}/>
-                <Text>Clenliness rating</Text>
+                <Text style={styles.text}>Cleanliness rating</Text>
                 <Stars
                 default={0}
                 update={(val)=>{this.setState({clenliness_rating: val})}}
@@ -138,7 +159,7 @@ class AddReviewScreen extends Component {
                 />
                 <TouchableOpacity
                 style={styles.button}
-                onPress={()=>this.sendReview()}//}
+                onPress={()=>this.checkInputs()}//}
                 >
                 <Text>Submit</Text>
             </TouchableOpacity>
@@ -147,28 +168,4 @@ class AddReviewScreen extends Component {
         );
     }
   }
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: "center",
-      paddingHorizontal: 10
-    },
-    button: {
-      flex:10,
-      borderRadius: 10,
-      borderColor:'black',
-      fontSize:30,
-      //align Vertically center
-      justifyContent: 'center',
-      // align horizontally center
-      alignItems: 'center',
-      backgroundColor: "magenta",
-      marginVertical: 20,
-      marginHorizontal: 12,
-      padding: 30
-    },
-    countContainer: {
-      alignItems: "center",
-      padding: 10
-    }});
   export default AddReviewScreen;

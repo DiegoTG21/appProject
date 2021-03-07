@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import {StyleSheet, View, FlatList, TouchableOpacity,ToastAndroid,Alert} from 'react-native';
+import { View, FlatList, TouchableOpacity,ToastAndroid,Alert} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Review from './Review';
 import {endToServer} from './functions/uploadPic';
 
-
+//Displays a list of reviews and takes multiple parameters so the user can 
+//select reviews to add or delete pictures and delete reviews too
 class ReviewList extends Component {
     constructor(props){
         super(props);
@@ -71,6 +72,7 @@ class ReviewList extends Component {
      }
 
     }
+    //deleets a photo from the server
     async deletePhoto(review)
     {
       return fetch("http://10.0.2.2:3333/api/1.0.0/location/"+review.location.location_id.toString()+
@@ -96,12 +98,12 @@ class ReviewList extends Component {
       console.error(error);
     });
     }
-    //delete from flatlist
+    //delete review from flatlist
     deleteItemById(id) {
       const filteredReviews = this.state.reviews.filter(item => item.review.review_id !== id);
       this.setState({ reviews: filteredReviews });
     }
-    //delete from DB
+    //delete review from DB
     async deleteReview(review){
       console.log("http://10.0.2.2:3333/api/1.0.0/location/"+  review.location.location_id +"/review/" +review.review.review_id)
             return await fetch ("http://10.0.2.2:3333/api/1.0.0/location/"+  review.location.location_id +"/review/" +review.review.review_id,
@@ -147,6 +149,7 @@ render(){
                 keyExtractor={item =>( item.review.review_id.toString())}
                 // ListFooterComponent={<Text>You reached the end</Text>}
                 // onEndReachedThreshold={0.1}
+                 initialNumToRender={7}
 
                 renderItem={({ item }) => 
                 {                                                       
@@ -167,43 +170,5 @@ render(){
             );
         }
   }
-  const styles = StyleSheet.create({
-    page:{
-      flex:10,
-      flexDirection: 'column',
-      justifyContent: 'center'
-    },
-    btnContainer:{
-      flex:1,
-      flexDirection: 'row',
-      marginVertical: 5
-      },
-      container: {
-        flex:9,
-        flexDirection: 'column',
-        justifyContent: 'center'
-      },
-    button: {
-      flex:1,
-      width:'40%',
-      borderRadius: 10,
-      borderColor:'black',
-      fontSize:30,
-      //align Vertically center
-      justifyContent: 'center',
-      // align horizontally center
-      alignItems: 'center',
-      backgroundColor: "magenta",
-      marginVertical: 5,
-      marginHorizontal: 5,
-      padding: 30
-      },
-      
-      appButtonText:{
-        fontSize: 12,
-        color: "black",
-        fontWeight: "bold",
-        alignSelf: "center",
-        textTransform: "uppercase"
-      }});
+    
   export default ReviewList;

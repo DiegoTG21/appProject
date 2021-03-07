@@ -4,16 +4,10 @@ import AsyncStorage from '@react-native-community/async-storage';
 import MapView, {PROVIDER_GOOGLE,Marker} from 'react-native-maps';
 import {requestLocationPermission,getGeoInfo} from '../components/functions/MapFuncs';
 import Loader from '../components/Loader';
+import styles from '../basic.styles.js'
+import specificStyles from '../specific.styles.js'
 
-const Lortader = () => (
-  <View style={{ minHeight: 230, padding: 20 }}>
-    <ActivityIndicator
-      color="#000"
-      size="large"
-      style={{ alignSelf: "center" }}
-    />
-  </View>
-);
+
 class MyAccountScreen extends React.Component {
   constructor(props){
     super(props);
@@ -108,10 +102,10 @@ class MyAccountScreen extends React.Component {
       this.state.isLoading ? <Loader/> : (
       <View style={styles.page}> 
         <View style={styles.container}>
-         <Text>First name: {this.state.firstName}</Text> 
-         <Text>Last name: {this.state.lastName}</Text> 
-         <Text>Email: {this.state.email}</Text>
-         <Text>You are here!</Text> 
+         <Text style={styles.text}>First name: {this.state.firstName}</Text> 
+         <Text style={styles.text}>Last name: {this.state.lastName}</Text> 
+         <Text style={styles.text}>Email: {this.state.email}</Text>
+         <Text style={styles.nameText}>You are here!</Text> 
           {/* show the users location */}
          <MapView
               pitchEnabled={false} rotateEnabled={false} zoomEnabled={false} scrollEnabled={false} 
@@ -138,7 +132,7 @@ class MyAccountScreen extends React.Component {
             style={styles.button}
             onPress={()=> this.props.navigation.navigate('Liked Reviews',{data:this.state.likedReviews}) }
           >
-            <Text>See Liked Reviews</Text>
+            <Text style={styles.appButtonText}>See Liked Reviews</Text>
           </TouchableOpacity>
         
         {/* <View>
@@ -150,7 +144,7 @@ class MyAccountScreen extends React.Component {
             style={styles.button}
             onPress={()=> this.logout()}
           >
-            <Text>Logout</Text>
+            <Text style={styles.appButtonText}>Logout</Text>
           </TouchableOpacity>
         </View>
       </View> 
@@ -158,54 +152,5 @@ class MyAccountScreen extends React.Component {
       );        
   }
 }
-const styles = StyleSheet.create({
-  page:{
-        flex:1,
-        paddingTop:5
-      },    
-  map: {
-    flex:2,
-    width:320,
-    margin: 10,
-    borderWidth: 1,
-    borderColor: '#000000',
-  },
-  image:{
-        height: 400,
-        margin: 10,
-        borderWidth: 1,
-        borderColor: '#000000'
-        },
-    container: {
-      flex: 10,
-      justifyContent: "center",
-      paddingHorizontal: 5,
-      paddingVertical: 5,
-      borderWidth: 2,
-      borderColor: '#000000',
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.8,
-      shadowRadius: 2,
-      height:200,
-      margin: 20,
-      alignItems: 'center',
-      justifyContent: 'center'
-    },
-    button: {
-      flex:1,
-      borderRadius: 10,
-      borderColor:'black',
-      fontSize:30,
-      //align Vertically center
-      justifyContent: 'center',
-      // align horizontally center
-      alignItems: 'center',
-      backgroundColor: "magenta",
-      marginVertical: 10,
-      marginHorizontal: 30,
-      padding: 20
 
-    }
-     });
 export default MyAccountScreen;

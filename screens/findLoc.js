@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { TextInput, Text, ActivityIndicator, View, FlatList,TouchableOpacity, StyleSheet,ToastAndroid } from 'react-native';
+import { TextInput, Text, View, FlatList,TouchableOpacity, StyleSheet,ToastAndroid } from 'react-native';
 // import MapView, {PROVIDER_GOOGLE,Marker} from 'react-native-maps';
 // import {requestLocationPermission,getCoordinates} from '../components/LocPermissions';
 // import Geolocation from 'react-native-geolocation-service';
 import AsyncStorage from '@react-native-community/async-storage';
- import buttonStyle from '../styles';
  import {requestLocationPermission,getGeoInfo,calculatePreciseDistance} from '../components/functions/MapFuncs';
  import Loader from '../components/Loader';
+ import styles from '../basic.styles.js'
+
 
  //import {t,getLan}from '../locales/getLan';
  
@@ -93,12 +94,12 @@ class findLoc extends React.Component {
       this.state.isLoading ? <Loader/> : (
 
         <View style={styles.page}>
-            <View>
-                <TextInput placeholder="Shop's name... " onChangeText={this.handleQuery} value= {this.state.queryName} id="name"/>
+            <View style={styles.smallContainer}>
+                <TextInput style={styles.inputText} placeholder="Shop's name... " onChangeText={this.handleQuery} value= {this.state.queryName} id="name"/>
             </View>
                 
             <TouchableOpacity onPress={()=>this.getLocs(this.state.queryName)} style={styles.button}>
-              <Text style={buttonStyle}>Find Location</Text>
+              <Text style={styles.appButtonText}>Find Location</Text>
             </TouchableOpacity>
             
                 <View style={styles.container}>
@@ -106,17 +107,21 @@ class findLoc extends React.Component {
                 <FlatList //Show location options
                     data={this.state.locs}
                     keyExtractor={item =>( item.location_id.toString())}
-                     renderItem={({ item }) => 
+                    initialNumToRender={7}
+                    renderItem={({ item }) => 
                      <TouchableOpacity
                      style={styles.option}
                     // style={styles.button}
                      onPress={async()=>
                      nav.navigate('Add Review',{location:item})
                      }
+                     ListEmptyComponent={
+                      <Text style={styles.appButtonText}>Could not find any results</Text>
+                     }
 
                    >
-                   <Text>{`${item.location_name}, ${item.location_town}\n 
-                    Distance: ${(calculatePreciseDistance(this.state.myLoc,item)/1000).toString()} km` }</Text>                
+                   <Text  style={styles.optionText}>{`${item.location_name}, ${item.location_town}`}</Text>  
+                    <Text  style={styles.appButtonText}>{`Distance: ${(calculatePreciseDistance(this.state.myLoc,item)/1000).toString()} km` }</Text>                
                    </TouchableOpacity>
                    }
                 />
@@ -127,53 +132,6 @@ class findLoc extends React.Component {
   );
 }
 }
-const styles = StyleSheet.create({
-  page:{
-    flex:10,
-    paddingTop:5
-  },
-  image:{
-        height: 400,
-        margin: 10,
-        borderWidth: 1,
-        borderColor: '#000000'
-        },
-    container: {
-      flex:15,
-      paddingHorizontal: 5,
-      paddingVertical: 5,
-      borderWidth: 2,
-      borderColor: '#000000',
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.8,
-      shadowRadius: 2,
-      margin: 20
-    },
-    button: {
-      flex:1,
-      borderRadius: 10,
-      borderColor:'black',
-      fontSize:30,
-      //align Vertically center
-      justifyContent: 'center',
-      // align horizontally center
-      alignItems: 'center',
-      backgroundColor: "magenta",
-      marginVertical: 20,
-      marginHorizontal: 12,
-      padding: 30
-    },
-    option: {
-      flex:1,
-      //align Vertically center
-      justifyContent: 'center',
-      // align horizontally center
-      alignItems: 'center',
-      backgroundColor: "#D3D3D3",
-      marginVertical: 1,
-      padding: 10
-    }
-     });
+
 export default findLoc;
   

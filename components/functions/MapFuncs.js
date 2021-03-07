@@ -37,18 +37,17 @@ import { getPreciseDistance} from 'geolib';
 
              resolve(position.coords);
          },
-         error => reject(error),
+         error => reject("Could not obtain geolocation", error),
          { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 }
        )
     })
  }
  export function calculatePreciseDistance  (coor1,coor2) {
-   console.log("Somweeee", coor1,"Swww",coor2)
+   //calculate distance in meters
   var pdis = getPreciseDistance(
     {latitude: coor1.latitude, longitude: coor1.longitude},
     {latitude: coor2.latitude, longitude: coor2.longitude},
   );
-  console.log(pdis)
   return pdis
   // alert(
   //   `Precise Distance\n\n${pdis} Meter\nOR\n${pdis / 1000} KM`

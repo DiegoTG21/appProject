@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, Text, ToastAndroid, View, FlatList,StyleSheet, TouchableOpacity } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+import {Text, ToastAndroid, View, TouchableOpacity } from 'react-native';
 import ReviewList from '../components/ReviewList';
 import Loader from '../components/Loader';
 import {getUserReviews} from '../components/functions/getUserReviews';
+import styles from '../basic.styles.js'
+import specificStyles from '../specific.styles.js'
 
 class MyReviewsScreen extends React.Component {
   constructor(props){
@@ -71,13 +72,13 @@ class MyReviewsScreen extends React.Component {
       this.state.isLoading ? <Loader/> : (
       <View style={styles.page}>
         <View style={styles.btnContainer}>
-        <TouchableOpacity style={[styles.button, {backgroundColor: this.state.colourBtnAddPic}]} 
+        <TouchableOpacity style={[specificStyles.buttonHeader, {backgroundColor: this.state.colourBtnAddPic}]} 
         onPress={()=>this.changeSelect("deletePic")
          //inform review list what to do with the selected review
           } >
           <Text style={styles.appButtonText}>Delete photos</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.button, {backgroundColor: this.state.colourBtnDelete}]} 
+        <TouchableOpacity style={[specificStyles.buttonHeader, {backgroundColor: this.state.colourBtnDelete}]} 
         onPress={()=>this.changeSelect("delete")  
           //inform review list what to do with the selected review
         } >
@@ -96,43 +97,4 @@ class MyReviewsScreen extends React.Component {
     );
   }
 }
-const styles = StyleSheet.create({
-  page:{
-    flex:10,
-    flexDirection: 'column',
-    justifyContent: 'center'
-  },
-  btnContainer:{
-    flex:1,
-    flexDirection: 'row',
-    marginVertical: 5
-    },
-    container: {
-      flex:9,
-      flexDirection: 'column',
-      justifyContent: 'center'
-    },
-  button: {
-    flex:1,
-    width:'40%',
-    borderRadius: 10,
-    borderColor:'black',
-    fontSize:30,
-    //align Vertically center
-    justifyContent: 'center',
-    // align horizontally center
-    alignItems: 'center',
-    backgroundColor: "magenta",
-    marginVertical: 5,
-    marginHorizontal: 5,
-    padding: 30
-    },
-    
-    appButtonText:{
-      fontSize: 12,
-      color: "black",
-      fontWeight: "bold",
-      alignSelf: "center",
-      textTransform: "uppercase"
-    }});
 export default MyReviewsScreen;

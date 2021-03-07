@@ -3,6 +3,10 @@ import { ActivityIndicator, Text, View, Dimensions, Image,StyleSheet } from 'rea
 import Stars from 'react-native-stars';
 import LikeButton from './LikeButton';
 import AsyncStorage from '@react-native-community/async-storage';
+import Loader from './Loader';
+import styles from '../basic.styles.js'
+import specificStyles from '../specific.styles.js'
+
 //used to display the pictures
 const SCREEN_WIDTH = Dimensions.get("window").width;
 class LocReview extends Component {
@@ -103,8 +107,8 @@ class LocReview extends Component {
         console.log("see the review: ",review);
 
         return(
-            <View style={styles.container}>
-             {this.state.isLoading ? <ActivityIndicator/> : (
+            <View style={specificStyles.container}>
+             {this.state.isLoading ? <Loader/> : (
 
                 <View style={styles.review} >
                     <Text style={styles.text} >Overall rating:</Text>
@@ -138,7 +142,7 @@ class LocReview extends Component {
                     fullStar={require('./images/starFilled.png')}
                     emptyStar={require('./images/starEmpty.png')}
                     halfStar={require('./images/starHalf.png')}/>
-                    <Text style={styles.text}>Clenliness rating</Text>
+                    <Text style={styles.text}>Cleanliness rating</Text>
                     <Stars
                     half={true}
                     display={review.review_clenlinessrating}
@@ -169,63 +173,4 @@ class LocReview extends Component {
         );
     }
 }
-const styles = StyleSheet.create({    
-    image:{
-        height:SCREEN_WIDTH* 0.70,
-        width:SCREEN_WIDTH* 0.70,
-        marginVertical: 4
-
-     },
-
-     text:{
-        fontSize: 15,
-        color: "black",
-        textDecorationColor: "magenta",
-        textShadowRadius: 1,
-        margin: 2
-     },
-     info:{
-        fontSize: 11,
-        color: "black",
-        textShadowRadius: 1,
-        padding:5,
-        margin: 2
-     },
-    container: {
-        flex: 10,
-        justifyContent: "center",
-        paddingHorizontal: 5,
-        paddingVertical: 15,
-        borderWidth: 2,
-        borderColor: '#000000',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.8,
-        shadowRadius: 2,
-        margin: 2,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    review: {
-        flex:9,
-        justifyContent: "center",
-        paddingHorizontal: 4,
-        paddingVertical: 4,
-        margin: 15,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    button: {
-        flex:1,
-        borderRadius: 10,
-        borderColor:'black',
-        fontSize:30,
-        alignItems: "center",
-        backgroundColor: "magenta",
-        marginVertical: 20,
-        marginHorizontal: 12,
-        padding: 30
-  
-      }
-});
 export default LocReview;

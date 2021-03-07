@@ -4,9 +4,9 @@ import { TextInput, Text, ActivityIndicator, View, FlatList,TouchableOpacity, St
 // import {requestLocationPermission,getCoordinates} from '../components/LocPermissions';
 // import Geolocation from 'react-native-geolocation-service';
 import AsyncStorage from '@react-native-community/async-storage';
-import MyBtn from '../components/MyBtn';
 import {requestLocationPermission,getGeoInfo,calculatePreciseDistance} from '../components/functions/MapFuncs';
 import Loader from '../components/Loader';
+import styles from '../basic.styles.js';
 
  //import {t,getLan}from '../locales/getLan';
 
@@ -98,8 +98,8 @@ class DiscoveryScreen extends React.Component {
                      }
 
                    >
-                     <Text>{`${item.location_name}, ${item.location_town}\n 
-                    Distance: ${(calculatePreciseDistance(this.state.myLoc,item)/1000).toString()} km` }</Text>
+                    <Text  style={styles.optionText}>{`${item.location_name}, ${item.location_town}`}</Text>  
+                    <Text  style={styles.appButtonText}>{`Distance: ${(calculatePreciseDistance(this.state.myLoc,item)/1000).toString()} km` }</Text>            
                    </TouchableOpacity>
                    }
                 />
@@ -110,62 +110,62 @@ class DiscoveryScreen extends React.Component {
   );
 }
 }
-const styles = StyleSheet.create({
-    page:{
-      flex:10,
-      paddingTop:5
-    },
-  titleText :{
-    fontSize: 20,
-    color: 'black',
-    fontWeight: 'bold',
-    alignContent: 'center',
-    textShadowColor: "magenta",
-    textShadowRadius: 2,
-    textAlign:'center'
-  },
-    image:{
-          height: 400,
-          margin: 10,
-          borderWidth: 1,
-          borderColor: '#000000'
-          },
-    container: {
-      flex:15,
-      paddingHorizontal: 5,
-      paddingVertical: 5,
-      borderWidth: 2,
-      borderColor: '#000000',
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.8,
-      shadowRadius: 2,
-      margin: 20
-    },
-    button: {
-      flex:1,
-      borderRadius: 10,
-      borderColor:'black',
-      fontSize:30,
-      //align Vertically center
-      justifyContent: 'center',
-      // align horizontally center
-      alignItems: 'center',
-      backgroundColor: "magenta",
-      marginVertical: 20,
-      marginHorizontal: 12,
-      padding: 30
-    },
-    option: {
-      flex:1,
-      //align Vertically center
-      justifyContent: 'center',
-      // align horizontally center
-      alignItems: 'center',
-      backgroundColor: "#D3D3D3",
-      marginVertical: 1,
-      padding: 10
-    }
-     });
+// const styles = StyleSheet.create({
+//     page:{
+//       flex:10,
+//       paddingTop:5
+//     },
+//   titleText :{
+//     fontSize: 20,
+//     color: 'black',
+//     fontWeight: 'bold',
+//     alignContent: 'center',
+//     textShadowColor: "magenta",
+//     textShadowRadius: 2,
+//     textAlign:'center'
+//   },
+//     image:{
+//           height: 400,
+//           margin: 10,
+//           borderWidth: 1,
+//           borderColor: '#000000'
+//           },
+//     container: {
+//       flex:15,
+//       paddingHorizontal: 5,
+//       paddingVertical: 5,
+//       borderWidth: 2,
+//       borderColor: '#000000',
+//       shadowColor: '#000',
+//       shadowOffset: { width: 0, height: 2 },
+//       shadowOpacity: 0.8,
+//       shadowRadius: 2,
+//       margin: 20
+//     },
+//     button: {
+//       flex:1,
+//       borderRadius: 10,
+//       borderColor:'black',
+//       fontSize:30,
+//       //align Vertically center
+//       justifyContent: 'center',
+//       // align horizontally center
+//       alignItems: 'center',
+//       backgroundColor: "magenta",
+//       marginVertical: 20,
+//       marginHorizontal: 12,
+//       padding: 30
+//     },
+//     option: {
+//       flex:1,
+//       //align Vertically center
+//       justifyContent: 'center',
+//       // align horizontally center
+//       alignItems: 'center',
+//       backgroundColor: "#D3D3D3",
+//       marginVertical: 1,
+//       padding: 10
+//     }
+//      });
 export default DiscoveryScreen;
   

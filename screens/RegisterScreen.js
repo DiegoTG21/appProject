@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { Text, TextInput, View, TouchableOpacity, StyleSheet, Alert,Button,ToastAndroid } from 'react-native';
 //import { NavigationContainer } from '@react-navigation/native';
 import RNPasswordStrengthMeter from 'react-native-password-strength-meter';
-
+import styles from '../basic.styles.js'
 class RegisterScreen extends React.Component {
   constructor(props){
     super(props);
@@ -99,15 +99,17 @@ addNewUser(){
      return response.json()
      //if bad request
    } else if (response.status == 400) {
-     throw 'You are already registered or your information wasnt correct.';
+    Alert.alert('You are already registered or your information wasnt correct.')
    } else {
-     throw 'Problem login in.' + response.status;
+     throw 'Problem registering.' + response.status;
    }
   })
   .then(async (ResponseJson)=> {
-   console.log(ResponseJson);
-   await AsyncStorage.setItem('@userId', ResponseJson.id.toString());
-   this.props.navigation.navigate('Login');
+    if(ResponseJson!==null)
+    {//if they successfully register then login
+          await AsyncStorage.setItem('@userId', ResponseJson.id.toString());
+          this.props.navigation.navigate('Login');
+    }
  })
  .catch((error) => {
    console.error(error);
@@ -118,45 +120,28 @@ addNewUser(){
       const nav = this.props.navigation;
       return (
        <View>
-          <TextInput placeholder="First name... " onChangeText={this.handleFName} value= {this.state.first_name} id="fname"/>
-          <TextInput placeholder="Last name... " onChangeText={this.handleSName} value= {this.state.last_name}id="sname"/>
-          <TextInput placeholder="Email... "type="email" onChangeText={this.handleEmail} value= {this.state.email}id="email"/>
+          <TextInput style={styles.inputText} placeholder="First name... " onChangeText={this.handleFName} value= {this.state.first_name} id="fname"/>
+          <TextInput style={styles.inputText} placeholder="Last name... " onChangeText={this.handleSName} value= {this.state.last_name}id="sname"/>
+          <TextInput style={styles.inputText} placeholder="Email... "type="email" onChangeText={this.handleEmail} value= {this.state.email}id="email"/>
           <RNPasswordStrengthMeter  meterType="bar"
           placeholder="Password... " type="password"  onChangeText={this.handleConfirmPassword}id="conpassword" />
-          <TextInput secureTextEntry={true} placeholder="Confirm password... " type="password"  onChangeText={this.handlePassword} id="password"/>
+          <RNPasswordStrengthMeter  meterType="bar"
+           secureTextEntry={true} 
+           inputProps= {{
+            placeholder: 'Confirm password...',
+            secureTextEntry: true,
+
+        }}
+         type="password"  onChangeText={this.handlePassword} id="password"/>
           <TouchableOpacity
             style={styles.button}
             onPress={()=> this.validate(this.state)}
           >
-            <Text>Register</Text>
+            <Text style={styles.appButtonText}>Register</Text>
           </TouchableOpacity>
        </View>
       );
     }
   }
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: "center",
-      paddingHorizontal: 10
-    },
-    button: {
-      flex:10,
-      borderRadius: 10,
-      borderColor:'black',
-      fontSize:30,
-      //align Vertically center
-      justifyContent: 'center',
-      // align horizontally center
-      alignItems: 'center',
-      backgroundColor: "magenta",
-      marginVertical: 20,
-      marginHorizontal: 12,
-      padding: 30
-
-    },
-    countContainer: {
-      alignItems: "center",
-      padding: 10
-    }});
+ 
   export default RegisterScreen;

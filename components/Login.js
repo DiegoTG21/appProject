@@ -5,13 +5,15 @@ import { Text, TextInput, View, TouchableOpacity, StyleSheet,Button,ToastAndroid
 // import { ThemeContext } from 'react-navigation';
 // import {requestLocationPermission,findCoordinates} from './LocPermissions';
 import {t,getLan}from '../locales/getLan';
+import styles from '../basic.styles.js'
+import specificStyles from '../specific.styles.js'
 
 class Login extends React.Component {
   constructor(props){
     super(props);
     this.state={
-      email:'f@gmail.com',
-      password:'password'
+      email:'',
+      password:''
     }
   }
 handleEmailInput=(email)=>{
@@ -39,17 +41,21 @@ this.setState({password:password})
         ToastAndroid.show("You are logged on!", ToastAndroid.SHORT);
         return response.json()
       } else if (response.status == 400) {
-        throw 'Wrong email or password.';
+        ToastAndroid.show("Wrong email or password.", ToastAndroid.SHORT);
+        return null
+        // throw 'Wrong email or password.';
       } else {
         throw 'Problem login in.' + response.status;
       }
      })
      .then(async (responseJson)=> {
-      console.log(responseJson);
+      if(responseJson!==null)
+      {//save user's credentials 
       await AsyncStorage.setItem('@sessionToken', responseJson.token);
       await AsyncStorage.setItem('@userID', responseJson.id.toString());
       console.log("Going to home screen");
       this.props.navigation.navigate('Home');
+    }
     })
     .catch((error) => {
       console.error(error);
@@ -69,24 +75,25 @@ static navigationOptions = {
     const nav = this.props.navigation;
 
     return (
-      <View style={styles.container}>
-      <View style={styles.container}>
+      <View style={styles.page}>
+              <Text style={specificStyles.appNameText}>CoffiDa</Text>
+      <View style={specificStyles.loginContainer}>
         {/* contains the login inputs */}
-           <TextInput placeholder="Email... " onChangeText={this.handleEmailInput} value= {this.state.email}/>
-          <TextInput placeholder="Password... " secureTextEntry={true} onChangeText={this.handlePasswordInput} value= {this.state.password}/>
+           <TextInput style={styles.inputText} placeholder="Email... " onChangeText={this.handleEmailInput} value= {this.state.email}/>
+          <TextInput style={styles.inputText} placeholder="Password... " secureTextEntry={true} onChangeText={this.handlePasswordInput} value= {this.state.password}/>
       </View>
-      <View style={styles.container}>
+      <View style={specificStyles.loginContainer}>
       <TouchableOpacity
       style={styles.button}
       onPress={()=> this.serverLogin()}
     >
-      <Text>Login</Text>
+      <Text style={styles.appButtonText}>Login</Text>
     </TouchableOpacity>
     <TouchableOpacity
       style={styles.button}
       onPress={()=>  nav.navigate('Register')}
     >
-      <Text>Register</Text>
+      <Text style={styles.appButtonText}>Register</Text>
     </TouchableOpacity>
     </View>
     </View>
@@ -97,28 +104,6 @@ static navigationOptions = {
 
 }
 
-const styles = StyleSheet.create({
-    container: {
-      flexDirection: 'column',
-      //flexWrap: 'wrap',
-      marginVertical: 20,
-      marginHorizontal: 12,
-    },
-    button: {
-      flex:1,
-      borderRadius: 10,
-      borderColor:'black',
-      fontSize:30,
-      //align Vertically center
-      justifyContent: 'center',
-      // align horizontally center
-      alignItems: 'center',
-      backgroundColor: "magenta",
-      marginVertical: 20,
-      marginHorizontal: 12,
-      padding: 30
 
-    }
-     });
 
 export default Login;
