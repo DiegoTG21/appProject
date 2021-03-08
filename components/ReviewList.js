@@ -151,7 +151,9 @@ render(){
                 // ListFooterComponent={<Text>You reached the end</Text>}
                 // onEndReachedThreshold={0.1}
                  initialNumToRender={7}
-
+                 ListEmptyComponent={
+                  <Text style={styles.appButtonText}>Nothing to see here</Text>
+                 }  
                 renderItem={({ item }) => 
                 {                                                       
                   if (selectIndicator ==true) {

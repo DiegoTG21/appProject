@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+//these styles are used in more specific occassions
 export default StyleSheet.create({
     buttonHeader: {
             flex:1,

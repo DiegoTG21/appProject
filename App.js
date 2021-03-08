@@ -2,6 +2,7 @@ import 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+//import all the screens
 import Login from './components/Login';
 import MenuScreen from './screens/MenuScreen';
 import SearchScreen from './screens/SearchScreen';
@@ -23,7 +24,7 @@ const Stack = createStackNavigator();
 export default function App() { 
 
  return (   
-   
+   //use a stack navigator 
      <NavigationContainer>
         <Stack.Navigator>
             <Stack.Screen name="Login"  component={Login} />

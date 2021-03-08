@@ -116,8 +116,8 @@ class findLoc extends React.Component {
                      nav.navigate('Add Review',{location:item})
                      }
                      ListEmptyComponent={
-                      <Text style={styles.appButtonText}>Could not find any results</Text>
-                     }
+                      <Text style={styles.appButtonText}>Nothing to see here</Text>
+                     } 
 
                    >
                    <Text  style={styles.optionText}>{`${item.location_name}, ${item.location_town}`}</Text>  

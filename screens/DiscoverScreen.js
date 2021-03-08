@@ -90,7 +90,10 @@ class DiscoveryScreen extends React.Component {
                 <FlatList
                     data={this.state.locs}
                     keyExtractor={item =>( item.location_id.toString())}
-                     renderItem={({ item }) => 
+                    ListEmptyComponent={
+                      <Text style={styles.appButtonText}>Nothing to see here</Text>
+                     }  
+                    renderItem={({ item }) => 
                      <TouchableOpacity
                     style={styles.option}
                      onPress={async()=>

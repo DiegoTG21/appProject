@@ -5,6 +5,8 @@ import { TextInput, Text, ListItem, View, FlatList,TouchableOpacity, StyleSheet,
 // import Geolocation from 'react-native-geolocation-service';
 import AsyncStorage from '@react-native-community/async-storage';
 import styles from '../styles/basic.styles.js'
+import {requestLocationPermission,getGeoInfo,calculatePreciseDistance} from '../components/functions/MapFuncs';
+
  //import {t,getLan}from '../locales/getLan';
 
 class SearchScreen extends React.Component {
@@ -25,6 +27,7 @@ class SearchScreen extends React.Component {
       priceRating:'',
       isLoading:true,
       location:'',
+      myLoc:'',
       colourBtnAddRev:'grey',
       colourBtnSeeLoc:'magenta',
       addReview:true,//used to know what the user wants to do
@@ -82,7 +85,6 @@ handlePriceRatQuery = (text) => {
 
  async getLocs(){
      //reformat query so it can be used
-     console.log("function is called ",query)
      const query = this.state.queryName.replace(/ /g, '%20')
      console.log("Show append query: ",query)
      //fetchj request
@@ -156,6 +158,14 @@ handlePriceRatQuery = (text) => {
       ToastAndroid.show("Select a location", ToastAndroid.SHORT);
       //update the action
  }
+ async componentDidMount(){
+  await requestLocationPermission();
+  //get the user's location
+  this.setState({ myLoc:await getGeoInfo()});
+  // console.log("Just making sure:        ",this.state.reviews);
+  this.setState({ isLoading: false });
+
+}
   render(){
      return (   
         <View style={styles.page}>
@@ -196,7 +206,10 @@ handlePriceRatQuery = (text) => {
                 <FlatList //Show location options
                     data={this.state.locs}
                     keyExtractor={item =>( item.location_id.toString())}
-                     renderItem={({ item }) => 
+                    ListEmptyComponent={
+                      <Text style={styles.appButtonText}>Could not find any results</Text>
+                     }                    
+                    renderItem={({ item }) => 
                      <TouchableOpacity
                      style={styles.option}
                     // style={styles.button}
@@ -205,8 +218,9 @@ handlePriceRatQuery = (text) => {
                      }
 
                    >
-                     <Text>{`${item.location_name}, ${item.location_town}` }</Text>
-                   </TouchableOpacity>
+                      <Text  style={styles.optionText}>{`${item.location_name}, ${item.location_town}`}</Text>  
+                      <Text  style={styles.appButtonText}>{`Distance: ${(calculatePreciseDistance(this.state.myLoc,item)/1000).toString()} km` }</Text>
+                    </TouchableOpacity>
                    }
                 />
              </View>

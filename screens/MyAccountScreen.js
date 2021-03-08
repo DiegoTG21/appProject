@@ -5,9 +5,9 @@ import MapView, {PROVIDER_GOOGLE,Marker} from 'react-native-maps';
 import {requestLocationPermission,getGeoInfo} from '../components/functions/MapFuncs';
 import Loader from '../components/Loader';
 import styles from '../styles/basic.styles.js'
-import specificStyles from '../styles/specific.styles.js'
 
-
+// in this screen you can see your location and user info. You can also 
+//see your liked reviews and log out.
 class MyAccountScreen extends React.Component {
   constructor(props){
     super(props);
