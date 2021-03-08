@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions} from 'react-native';
-
+//these styles are used often in every screen
 const SCREEN_WIDTH = Dimensions.get("window").width;
 export default StyleSheet.create({
     button: {
@@ -55,6 +55,7 @@ export default StyleSheet.create({
     btnContainer:{
       flex:1,
       flexDirection: 'row',
+      justifyContent: 'flex-start',
       marginVertical: 5
       },
       // container: {
@@ -98,6 +99,8 @@ export default StyleSheet.create({
     },
     inputText:{
       fontSize:16,
+      alignContent: 'center'
+
     },
     map: {
       flex:3,

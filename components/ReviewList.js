@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View, FlatList, TouchableOpacity,ToastAndroid,Alert} from 'react-native';
+import { View, FlatList,Text, TouchableOpacity,ToastAndroid,Alert} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Review from './Review';
 import {endToServer} from './functions/uploadPic';
+import styles from '../styles/basic.styles.js'
 
 //Displays a list of reviews and takes multiple parameters so the user can 
 //select reviews to add or delete pictures and delete reviews too
@@ -104,6 +105,7 @@ class ReviewList extends Component {
       const filteredReviews = this.state.reviews.filter(item => item.review.review_id !== id);
       this.setState({ reviews: filteredReviews });
     }
+
     //delete review from DB
     async deleteReview(review){
       console.log("http://10.0.2.2:3333/api/1.0.0/location/"+  review.location.location_id +"/review/" +review.review.review_id)

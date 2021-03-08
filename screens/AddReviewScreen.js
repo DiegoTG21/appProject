@@ -152,7 +152,8 @@ class AddReviewScreen extends Component {
                 emptyStar={require('./images/starEmpty.png')}
                 halfStar={require('./images/starHalf.png')}/>
                 <TextInput
-                numberOfLines={4}
+                  multiline = {true}
+                  numberOfLines = {5}
                 style={{ height: 100, borderColor: 'gray', borderWidth: 1 }}
                 onChangeText={text =>this.handleReview(text)}
                 placeholder="Tell us what you think here!"

@@ -20,6 +20,7 @@ class Review extends Component {
           picture:''  
          }
     }
+    //tries to see if a picture is avaliable for each review
     async  getPic(review){
         console.log("http://10.0.2.2:3333/api/1.0.0/location/"+  review.location.location_id +"/review/" +review.review.review_id)
               return await fetch ("http://10.0.2.2:3333/api/1.0.0/location/"+  review.location.location_id +"/review/"
